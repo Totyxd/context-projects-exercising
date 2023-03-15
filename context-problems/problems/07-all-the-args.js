@@ -1,9 +1,8 @@
-function callOnTarget(func, obj1, obj2) {
-  // Your code here
+function allTheArgs(func, ...args) {
+  return func.bind(null, ...args);
 }
-
 
 /*****************************************************************************/
 /***************** DO NOT MODIFY ANYTHING UNDER THIS LINE ********************/
 
-module.exports = callOnTarget;
+module.exports = allTheArgs;
