@@ -11,7 +11,6 @@ class Cursor {
 
     this.gridColor = 'black';
     this.cursorColor = 'yellow';
-
   }
 
   resetBackgroundColor() {
@@ -23,21 +22,36 @@ class Cursor {
   }
 
   up() {
-    // Move cursor up
+    this.row -= 1;
+
+    if (this.row < 0) {
+      this.row = 0;
+    }
   }
 
   down() {
-    // Move cursor down
+    this.row += 1;
+
+    if (this.row > 2) {
+      this.row = 2;
+    }
   }
 
   left() {
-    // Move cursor left
+    this.col -= 1;
+
+    if (this.col < 0) {
+      this.col = 0;
+    }
   }
 
   right() {
-    // Move cursor right
-  }
+    this.col += 1;
 
+    if (this.col > 2) {
+      this.col = 2;
+    }
+  }
 }
 
 
