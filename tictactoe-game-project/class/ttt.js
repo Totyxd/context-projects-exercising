@@ -16,29 +16,29 @@ class TTT {
     Screen.initialize(3, 3);
     Screen.setGridlines(true);
 
-    Screen.addCommand('check', 'Returs the winner, tie or false if not ended.', TTT.checkWin);
-    Screen.addCommand('u', 'Moves the cursor up', this.cursor.up);
-    Screen.addCommand('d', 'Moves the cursor down', this.cursor.down);
-    Screen.addCommand('r', 'Moves the cursor rigth', this.cursor.right);
-    Screen.addCommand('l', 'Moves the cursor left', this.cursor.left);
-    Screen.addCommand('s', 'Sets the cursor at the current grid', TTT.setCursor);
+    Screen.addCommand(`w`, `Move Up`, this.cursor.up.bind(this.cursor));
+    Screen.addCommand(`s`, `Move Down`, this.cursor.down.bind(this.cursor));
+    Screen.addCommand(`a`, `Move Left`, this.cursor.left.bind(this.cursor));
+    Screen.addCommand(`d`, `Move Right`, this.cursor.right.bind(this.cursor));
+    Screen.addCommand(`t`, `Player turn: ${this.playerTurn}`, this.playMove.bind(this));
+
+    this.cursor.resetBackgroundColor();
+    this.cursor.setBackgroundColor();
 
     Screen.render();
   }
 
-  static setCursor() {
-    Screen.setGrid(this.cursor.row, this.cursor.col, this.playerTurn);
-    if (this.playerTurn === "O") {
-      this.playerTurn = "X";
-    }else {
-      this.playerTurn = "O";
+  playMove() {
+    const row = this.cursor.row;
+    const col = this.cursor.col;
+    this.grid[row][col] = this.playerTurn;
+    Screen.setGrid(row, col, this.playerTurn);
+    Screen.setTextColor(row, col, 'black');
+    const win = TTT.checkWin(this.grid);
+    if(win) {
+      TTT.endGame(win);
     }
-
-    const checkPoint = this.checkWin(this.grid);
-
-    if (checkPoint !== false) {
-      TTT.endGame(checkPoint);
-    }
+    this.playerTurn === 'O' ? this.playerTurn = 'X' : this.playerTurn = 'O';
   }
 
   static checkWin(grid) {

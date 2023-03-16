@@ -22,35 +22,38 @@ class Cursor {
   }
 
   up() {
-    this.row -= 1;
-
-    if (this.row < 0) {
-      this.row = 0;
-    }
+    // Move cursor up
+    this.resetBackgroundColor.call(this);
+    if(this.row !== 0) this.row -= 1;
+    this.setBackgroundColor.call(this);
+    Screen.render();
   }
 
   down() {
-    this.row += 1;
+    // Move cursor down
+    this.resetBackgroundColor();
+    if(this.row !== 2) this.row += 1;
+    this.setBackgroundColor();
+    Screen.render();
 
-    if (this.row > 2) {
-      this.row = 2;
-    }
   }
 
   left() {
-    this.col -= 1;
+    // Move cursor left
+    this.resetBackgroundColor();
+    if(this.col !== 0) this.col -= 1;
+    this.setBackgroundColor();
+    Screen.render();
 
-    if (this.col < 0) {
-      this.col = 0;
-    }
   }
 
   right() {
-    this.col += 1;
+    // Move cursor right
+    this.resetBackgroundColor();
+    if(this.col !== 2) this.col += 1;
+    this.setBackgroundColor();
+    Screen.render();
 
-    if (this.col > 2) {
-      this.col = 2;
-    }
   }
 }
 
