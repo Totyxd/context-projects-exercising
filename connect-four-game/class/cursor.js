@@ -14,22 +14,31 @@ class Cursor {
 
   }
 
-  resetBackgroundColor() {
+  resetBackgroundColor = () => {
     Screen.setBackgroundColor(this.row, this.col, this.gridColor);
-  }
+  };
 
-  setBackgroundColor() {
+  setBackgroundColor = () => {
     Screen.setBackgroundColor(this.row, this.col, this.cursorColor);
   }
 
   left() {
-    // Move cursor left
+    this.resetBackgroundColor();
+    if (this.col > 0) this.col -= 1;
+    this.setBackgroundColor();
+    Screen.render();
   }
 
   right() {
-    // Move cursor right
+    this.resetBackgroundColor();
+    if (this.col < 6) this.col += 1;
+    this.setBackgroundColor();
+    Screen.render();
   }
 
+  getCol = () => {
+    return this.col;
+  }
 }
 
 
