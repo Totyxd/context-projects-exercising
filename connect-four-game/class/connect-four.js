@@ -1,6 +1,5 @@
 const Screen = require("./screen");
 const Cursor = require("./cursor");
-const { grid } = require("./screen");
 
 class ConnectFour {
 
@@ -36,7 +35,7 @@ class ConnectFour {
     if (row !== undefined) {
       this.grid[row][currentCol] = this.playerTurn;
       Screen.setGrid(row, currentCol, this.playerTurn);
-      Screen.setTextColor(row, currentCol, "black");
+      Screen.setTextColor(row, currentCol, "red");
       const win = ConnectFour.checkWin(this.grid);
       if (win) {
         ConnectFour.endGame(win);
