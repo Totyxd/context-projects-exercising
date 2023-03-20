@@ -1,5 +1,6 @@
 const Screen = require("./screen");
 const Cursor = require("./cursor");
+const ComputerPlayer = require("./ComputerPlayer");
 
 class TTT {
 
@@ -12,6 +13,7 @@ class TTT {
                  [' ',' ',' ']]
 
     this.cursor = new Cursor(3, 3);
+    this.cpu = new Cursor(3, 3);
 
     Screen.initialize(3, 3);
     Screen.setGridlines(true);
@@ -21,6 +23,7 @@ class TTT {
     Screen.addCommand(`a`, `Move Left`, this.cursor.left.bind(this.cursor));
     Screen.addCommand(`d`, `Move Right`, this.cursor.right.bind(this.cursor));
     Screen.addCommand(`t`, `Player turn: ${this.playerTurn}`, this.playMove.bind(this));
+    //Screen.addCommand("c", "After `O` moves press this key to get IA's move", this.cpuMove.bind(this));
 
     this.cursor.resetBackgroundColor();
     this.cursor.setBackgroundColor();
@@ -29,17 +32,48 @@ class TTT {
   }
 
   playMove() {
+    if (this.playerTurn === "O"){
     const row = this.cursor.row;
     const col = this.cursor.col;
     this.grid[row][col] = this.playerTurn;
     Screen.setGrid(row, col, this.playerTurn);
     Screen.setTextColor(row, col, 'black');
+    Screen.render();
     const win = TTT.checkWin(this.grid);
     if(win) {
       TTT.endGame(win);
     }
-    this.playerTurn === 'O' ? this.playerTurn = 'X' : this.playerTurn = 'O';
-  }
+    this.playerTurn === "O"? this.playerTurn = "X" : this.playerTurn = "O";
+  };
+
+  this.cpuMove();
+  Screen.render();
+  };
+
+
+  cpuMove() {
+    if (this.playerTurn === "X") {
+      const checkMove = ComputerPlayer.getSmartMove(this.grid, "X");
+      if (checkMove) {
+        this.cpu.row = checkMove.row;
+        this.cpu.col = checkMove.col;
+      }else {
+        const randomMove = ComputerPlayer.randomMove(this.grid);
+        this.cpu.row = randomMove.row;
+        this.cpu.col = randomMove.col;
+      }
+      const row = this.cpu.row;
+      const col = this.cpu.col;
+      this.grid[row][col] = this.playerTurn;
+      Screen.setGrid(row, col, this.playerTurn);
+      Screen.setTextColor(row, col, 'black');
+      const win = TTT.checkWin(this.grid);
+      if(win) {
+        TTT.endGame(win);
+      }
+      this.playerTurn === "X" ? this.playerTurn = "O" : this.playerTurn = "X";
+    };
+  };
 
   static checkWin(grid) {
 
@@ -73,6 +107,7 @@ class TTT {
   }
 
 }
+
 
 //-------------------------------- Helper private funcs ------------------------------------------------------
 
